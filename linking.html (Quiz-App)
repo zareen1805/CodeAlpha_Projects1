@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #flashcard {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        #flashcard h2 {
+            margin: 10px 0;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flashcard Quiz App</h1>
+    <div id="add-card-section">
+        <h2>Add a Flashcard</h2>
+        <label>
+            Question:
+            <input type="text" id="question" />
+        </label><br><br>
+        <label>
+            Answer:
+            <input type="text" id="answer" />
+        </label><br><br>
+        <button onclick="addFlashcard()">Add Flashcard</button>
+    </div>
+
+    <div id="quiz-section">
+        <h2>Quiz</h2>
+        <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div id="flashcard">
+        <h2 id="quiz-question"></h2>
+        <input type="text" id="user-answer" placeholder="Your answer" /><br><br>
+        <button onclick="submitAnswer()">Submit</button>
+    </div>
+
+    <div id="score-section">
+        <h2>Your Score: <span id="score">0</span>/<span id="total">0</span></h2>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentCardIndex = 0;
+        let score = 0;
+
+        function addFlashcard() {
+            const question = document.getElementById('question').value.trim();
+            const answer = document.getElementById('answer').value.trim();
+
+            if (question && answer) {
+                flashcards.push({ question, answer });
+                document.getElementById('question').value = '';
+                document.getElementById('answer').value = '';
+                alert('Flashcard added!');
+            } else {
+                alert('Please enter both a question and an answer.');
+            }
+        }
+
+        function startQuiz() {
+            if (flashcards.length === 0) {
+                alert('No flashcards available. Please add some first.');
+                return;
+            }
+
+            currentCardIndex = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('total').textContent = flashcards.length;
+            showFlashcard();
+        }
+
+        function showFlashcard() {
+            document.getElementById('flashcard').style.display = 'block';
+            document.getElementById('quiz-question').textContent =
+                flashcards[currentCardIndex].question;
+            document.getElementById('user-answer').value = '';
+        }
+
+        function submitAnswer() {
+            const userAnswer = document.getElementById('user-answer').value.trim();
+            const correctAnswer = flashcards[currentCardIndex].answer.trim();
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                alert('Correct!');
+                score++;
+            } else {
+                alert(`Incorrect! The correct answer is: ${correctAnswer}`);
+            }
+
+            document.getElementById('score').textContent = score;
+
+            currentCardIndex++;
+            if (currentCardIndex < flashcards.length) {
+                showFlashcard();
+            } else {
+                alert('Quiz completed!');
+                document.getElementById('flashcard').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
