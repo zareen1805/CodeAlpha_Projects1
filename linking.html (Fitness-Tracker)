@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #4caf50;
+            color: white;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .workout-list, .goals {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .workout-item, .goal-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fitness Tracker</h1>
+    <div class="container">
+        <div id="goal-section">
+            <h2>Set Your Fitness Goal</h2>
+            <div class="input-group">
+                <input type="text" id="fitness-goal" placeholder="Enter your fitness goal (e.g., Run 5k)" />
+                <button onclick="setGoal()">Set Goal</button>
+            </div>
+            <div class="goals">
+                <h3>Your Goals:</h3>
+                <div id="goal-list"></div>
+            </div>
+        </div>
+
+        <div id="workout-section">
+            <h2>Log Your Workout</h2>
+            <div class="input-group">
+                <select id="exercise-type">
+                    <option value="Running">Running</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Weight Lifting">Weight Lifting</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="number" id="exercise-duration" placeholder="Duration (mins)" />
+                <button onclick="addWorkout()">Log Workout</button>
+            </div>
+            <div class="workout-list">
+                <h3>Your Workouts:</h3>
+                <div id="workout-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const goals = [];
+        const workouts = [];
+
+        function setGoal() {
+            const goalInput = document.getElementById('fitness-goal').value.trim();
+            if (goalInput) {
+                goals.push(goalInput);
+                document.getElementById('fitness-goal').value = '';
+                displayGoals();
+                alert('Goal added!');
+            } else {
+                alert('Please enter a goal.');
+            }
+        }
+
+        function displayGoals() {
+            const goalList = document.getElementById('goal-list');
+            goalList.innerHTML = goals.map((goal, index) => `
+                <div class="goal-item">
+                    ${index + 1}. ${goal}
+                </div>
+            `).join('');
+        }
+
+        function addWorkout() {
+            const type = document.getElementById('exercise-type').value;
+            const duration = document.getElementById('exercise-duration').value;
+
+            if (type && duration) {
+                workouts.push({ type, duration });
+                document.getElementById('exercise-duration').value = '';
+                displayWorkouts();
+                alert('Workout logged!');
+            } else {
+                alert('Please select an exercise type and duration.');
+            }
+        }
+
+        function displayWorkouts() {
+            const workoutLog = document.getElementById('workout-log');
+            workoutLog.innerHTML = workouts.map((workout, index) => `
+                <div class="workout-item">
+                    ${index + 1}. ${workout.type} - ${workout.duration} mins
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
